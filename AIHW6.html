@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page Title</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        
+        <style type="text/css">
+        
+            html, body{
+                background-color: #FAFAFA
+            }
+            table{
+                border:2px solid #000000;
+            }
+            td{
+                border: 1px solid #000000;
+                text-align: center;
+                vertical-align: middle; 
+            }
+            input {
+                color: #000000;
+                padding: 0;
+                border: 0;
+                text-align: center;
+                width: 48px;
+                height: 48px;
+                font-size: 24px;
+                background-color: #FFFFFF;
+                outline: none;
+            }
+            input:disabled {
+                background-color: #EEEEEE;
+            }
+            #cell0,  #cell1,  #cell2  { border-top:    2px solid #000000; }
+            #cell2,  #cell11, #cell20 { border-right:  2px solid #000000; }
+            #cell18, #cell19, #cell20 { border-bottom: 2px solid #000000; }
+            #cell0,  #cell9,  #cell18 { border-left:   2px solid #000000; }
+            #cell3,  #cell4,  #cell5  { border-top:    2px solid #000000; }
+            #cell5,  #cell14, #cell23 { border-right:  2px solid #000000; }
+            #cell21, #cell22, #cell23 { border-bottom: 2px solid #000000; }
+            #cell3,  #cell12, #cell21 { border-left:   2px solid #000000; }
+            #cell6,  #cell7,  #cell8  { border-top:    2px solid #000000; }
+            #cell8,  #cell17, #cell26 { border-right:  2px solid #000000; }
+            #cell24, #cell25, #cell26 { border-bottom: 2px solid #000000; }
+            #cell6,  #cell15, #cell24 { border-left:   2px solid #000000; }
+            #cell27, #cell28, #cell29 { border-top:    2px solid #000000; }
+            #cell29, #cell38, #cell47 { border-right:  2px solid #000000; }
+            #cell45, #cell46, #cell47 { border-bottom: 2px solid #000000; }
+            #cell27, #cell36, #cell45 { border-left:   2px solid #000000; }
+            #cell30, #cell31, #cell32 { border-top:    2px solid #000000; }
+            #cell32, #cell41, #cell50 { border-right:  2px solid #000000; }
+            #cell48, #cell49, #cell50 { border-bottom: 2px solid #000000; }
+            #cell30, #cell39, #cell48 { border-left:   2px solid #000000; }
+            #cell33, #cell34, #cell35 { border-top:    2px solid #000000; }
+            #cell35, #cell44, #cell53 { border-right:  2px solid #000000; }
+            #cell51, #cell52, #cell53 { border-bottom: 2px solid #000000; }
+            #cell33, #cell42, #cell51 { border-left:   2px solid #000000; }
+            #cell54, #cell55, #cell56 { border-top:    2px solid #000000; }
+            #cell56, #cell65, #cell74 { border-right:  2px solid #000000; }
+            #cell72, #cell73, #cell74 { border-bottom: 2px solid #000000; }
+            #cell54, #cell63, #cell72 { border-left:   2px solid #000000; }
+            #cell57, #cell58, #cell59 { border-top:    2px solid #000000; }
+            #cell59, #cell68, #cell77 { border-right:  2px solid #000000; }
+            #cell75, #cell76, #cell77 { border-bottom: 2px solid #000000; }
+            #cell57, #cell66, #cell75 { border-left:   2px solid #000000; }
+            #cell60, #cell61, #cell62 { border-top:    2px solid #000000; }
+            #cell62, #cell71, #cell80 { border-right:  2px solid #000000; }
+            #cell78, #cell79, #cell80 { border-bottom: 2px solid #000000; }
+            #cell60, #cell69, #cell78 { border-left:   2px solid #000000; }
+            
+        
+        
+        </style>
+</head>
+<body>
+
+<h1>AI Homework 6 Sudoku</h1>
+<p>Going for the extra cred baby!.</p>
+
+
+        <div class="containter">
+            <table id = "board">
+                <tr>
+                
+                <td><input id="cell0" type="text"></td>
+                <td><input id="cell1" type="text"></td>
+                <td><input id="cell2" type="text"></td>
+                <td><input id="cell3" type="text"></td>
+                <td><input id="cell4" type="text"></td>
+                <td><input id="cell5" type="text"></td>
+                <td><input id="cell6" type="text"></td>
+                <td><input id="cell7" type="text"></td>
+                <td><input id="cell8" type="text"></td>
+                
+                
+                </tr>
+                
+                
+                <tr>
+                
+                <td><input id="cell9" type="text"></td>
+                <td><input id="cell10" type="text"></td>
+                <td><input id="cell11" type="text"></td>
+                <td><input id="cell12" type="text"></td>
+                <td><input id="cell13" type="text"></td>
+                <td><input id="cell14" type="text"></td>
+                <td><input id="cell15" type="text"></td>
+                <td><input id="cell16" type="text"></td>
+                <td><input id="cell17" type="text"></td>
+                
+                
+                </tr>
+                
+                <tr>
+                
+                <td><input id="cell18" type="text"></td>
+                <td><input id="cell19" type="text"></td>
+                <td><input id="cell20" type="text"></td>
+                <td><input id="cell21" type="text"></td>
+                <td><input id="cell22" type="text"></td>
+                <td><input id="cell23" type="text"></td>
+                <td><input id="cell24" type="text"></td>
+                <td><input id="cell25" type="text"></td>
+                <td><input id="cell26" type="text"></td>
+                
+                
+                </tr>
+                
+                <tr>
+                
+                <td><input id="cell27" type="text"></td>
+                <td><input id="cell28" type="text"></td>
+                <td><input id="cell29" type="text"></td>
+                <td><input id="cell30" type="text"></td>
+                <td><input id="cell31" type="text"></td>
+                <td><input id="cell32" type="text"></td>
+                <td><input id="cell33" type="text"></td>
+                <td><input id="cell34" type="text"></td>
+                <td><input id="cell35" type="text"></td>
+                
+                
+                </tr>
+                
+                <tr>
+                
+                <td><input id="cell36" type="text"></td>
+                <td><input id="cell37" type="text"></td>
+                <td><input id="cell38" type="text"></td>
+                <td><input id="cell39" type="text"></td>
+                <td><input id="cell40" type="text"></td>
+                <td><input id="cell41" type="text"></td>
+                <td><input id="cell42" type="text"></td>
+                <td><input id="cell43" type="text"></td>
+                <td><input id="cell44" type="text"></td>
+                
+                
+                </tr>
+                
+                <tr>
+                
+                <td><input id="cell45" type="text"></td>
+                <td><input id="cell46" type="text"></td>
+                <td><input id="cell47" type="text"></td>
+                <td><input id="cell48" type="text"></td>
+                <td><input id="cell49" type="text"></td>
+                <td><input id="cell50" type="text"></td>
+                <td><input id="cell51" type="text"></td>
+                <td><input id="cell52" type="text"></td>
+                <td><input id="cell53" type="text"></td>
+                
+                
+                </tr>
+                
+                <tr>
+                
+                <td><input id="cell54" type="text"></td>
+                <td><input id="cell55" type="text"></td>
+                <td><input id="cell56" type="text"></td>
+                <td><input id="cell57" type="text"></td>
+                <td><input id="cell58" type="text"></td>
+                <td><input id="cell59" type="text"></td>
+                <td><input id="cell60" type="text"></td>
+                <td><input id="cell61" type="text"></td>
+                <td><input id="cell62" type="text"></td>
+                
+                
+                </tr>
+                
+                <tr>
+                
+                <td><input id="cell63" type="text"></td>
+                <td><input id="cell64" type="text"></td>
+                <td><input id="cell65" type="text"></td>
+                <td><input id="cell66" type="text"></td>
+                <td><input id="cell67" type="text"></td>
+                <td><input id="cell68" type="text"></td>
+                <td><input id="cell69" type="text"></td>
+                <td><input id="cell70" type="text"></td>
+                <td><input id="cell71" type="text"></td>
+                
+                
+                </tr>
+                
+                <tr>
+                
+                <td><input id="cell72" type="text"></td>
+                <td><input id="cell73" type="text"></td>
+                <td><input id="cell74" type="text"></td>
+                <td><input id="cell75" type="text"></td>
+                <td><input id="cell76" type="text"></td>
+                <td><input id="cell77" type="text"></td>
+                <td><input id="cell78" type="text"></td>
+                <td><input id="cell79" type="text"></td>
+                <td><input id="cell80" type="text"></td>
+                
+                
+                </tr>
+    
+    
+
+
+
+
+            </table>
+
+        </div>
+</body>
+</html>
