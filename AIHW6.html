@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Page Title</title>
+        <title>HW6</title>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
         
         <style type="text/css">
@@ -34,73 +34,33 @@
             input:disabled {
                 background-color: #EEEEEE;
             }
-            #cell0,  #cell1,  #cell2  { border-top:    2px solid #000000; }
-            #cell2,  #cell11, #cell20 { border-right:  2px solid #000000; }
-            #cell18, #cell19, #cell20 { border-bottom: 2px solid #000000; }
-            #cell0,  #cell9,  #cell18 { border-left:   2px solid #000000; }
-            #cell3,  #cell4,  #cell5  { border-top:    2px solid #000000; }
-            #cell5,  #cell14, #cell23 { border-right:  2px solid #000000; }
-            #cell21, #cell22, #cell23 { border-bottom: 2px solid #000000; }
-            #cell3,  #cell12, #cell21 { border-left:   2px solid #000000; }
-            #cell6,  #cell7,  #cell8  { border-top:    2px solid #000000; }
-            #cell8,  #cell17, #cell26 { border-right:  2px solid #000000; }
-            #cell24, #cell25, #cell26 { border-bottom: 2px solid #000000; }
-            #cell6,  #cell15, #cell24 { border-left:   2px solid #000000; }
-            #cell27, #cell28, #cell29 { border-top:    2px solid #000000; }
-            #cell29, #cell38, #cell47 { border-right:  2px solid #000000; }
-            #cell45, #cell46, #cell47 { border-bottom: 2px solid #000000; }
-            #cell27, #cell36, #cell45 { border-left:   2px solid #000000; }
-            #cell30, #cell31, #cell32 { border-top:    2px solid #000000; }
-            #cell32, #cell41, #cell50 { border-right:  2px solid #000000; }
-            #cell48, #cell49, #cell50 { border-bottom: 2px solid #000000; }
-            #cell30, #cell39, #cell48 { border-left:   2px solid #000000; }
-            #cell33, #cell34, #cell35 { border-top:    2px solid #000000; }
-            #cell35, #cell44, #cell53 { border-right:  2px solid #000000; }
-            #cell51, #cell52, #cell53 { border-bottom: 2px solid #000000; }
-            #cell33, #cell42, #cell51 { border-left:   2px solid #000000; }
-            #cell54, #cell55, #cell56 { border-top:    2px solid #000000; }
-            #cell56, #cell65, #cell74 { border-right:  2px solid #000000; }
-            #cell72, #cell73, #cell74 { border-bottom: 2px solid #000000; }
-            #cell54, #cell63, #cell72 { border-left:   2px solid #000000; }
-            #cell57, #cell58, #cell59 { border-top:    2px solid #000000; }
-            #cell59, #cell68, #cell77 { border-right:  2px solid #000000; }
-            #cell75, #cell76, #cell77 { border-bottom: 2px solid #000000; }
-            #cell57, #cell66, #cell75 { border-left:   2px solid #000000; }
-            #cell60, #cell61, #cell62 { border-top:    2px solid #000000; }
-            #cell62, #cell71, #cell80 { border-right:  2px solid #000000; }
-            #cell78, #cell79, #cell80 { border-bottom: 2px solid #000000; }
-            #cell60, #cell69, #cell78 { border-left:   2px solid #000000; }
-            
-            #board {
-                margin: auto;
-            }
-
-            h1, #description {
-                text-align: center;
-            }
-          
+            .top  { border-top:    2px solid #000000; }
+            .right { border-right:  2px solid #000000; }
+            .bottom { border-bottom: 2px solid #000000; }
+            .left { border-left:   2px solid #000000; }
+        
         
         </style>
 </head>
 <body>
 
 <h1>AI Homework 6 Sudoku</h1>
-<p id="description">Going for the extra cred baby!.</p>
+<p>Going for the extra cred baby!.</p>
 
 
         <div class="containter">
             <table id = "board">
                 <tr>
                 
-                <td><input id="cell0" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell1" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell2" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell3" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell4" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell5" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell6" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell7" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell8" type="number" maxlength ="1" min="1" max="9"></td>
+                <td><input id="cell00" class="top left" type="text" maxlength ="1"></td>
+                <td><input id="cell01" class="top" type="text" maxlength ="1"></td>
+                <td><input id="cell02" class="top right" type="text" maxlength ="1"></td>
+                <td><input id="cell03" class="top" type="text" maxlength ="1"></td>
+                <td><input id="cell04" class="top" type="text" maxlength ="1"></td>
+                <td><input id="cell05" class="top right" type="text" maxlength ="1"></td>
+                <td><input id="cell06" class="top" type="text" maxlength ="1"></td>
+                <td><input id="cell07" class="top" type="text" maxlength ="1"></td>
+                <td><input id="cell08" class="top right" type="text" maxlength ="1"></td>
                 
                 
                 </tr>
@@ -108,120 +68,120 @@
                 
                 <tr>
                 
-                <td><input id="cell9" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell10" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell11" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell12" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell13" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell14" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell15" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell16" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell17" type="number" maxlength ="1" min="1" max="9"></td>
+                <td><input id="cell10" class="left" type="text" maxlength ="1"></td>
+                <td><input id="cell11" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell12" class="right" type="text" maxlength ="1"></td>
+                <td><input id="cell13" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell14" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell15" class="right" type="text" maxlength ="1"></td>
+                <td><input id="cell16" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell17" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell18" class="right" type="text" maxlength ="1"></td>
                 
                 
                 </tr>
                 
                 <tr>
                 
-                <td><input id="cell18" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell19" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell20" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell21" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell22" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell23" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell24" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell25" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell26" type="number" maxlength ="1" min="1" max="9"></td>
+                <td><input id="cell20" class="left bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell21" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell22" class="bottom right" type="text" maxlength ="1"></td>
+                <td><input id="cell23" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell24" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell25" class="bottom right" type="text" maxlength ="1"></td>
+                <td><input id="cell26" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell27" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell28" class="right bottom" type="text" maxlength ="1"></td>
                 
                 
                 </tr>
                 
                 <tr>
                 
-                <td><input id="cell27" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell28" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell29" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell30" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell31" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell32" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell33" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell34" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell35" type="number" maxlength ="1" min="1" max="9"></td>
+                <td><input id="cell30" class="left" type="text" maxlength ="1"></td>
+                <td><input id="cell31" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell32" class="right" type="text" maxlength ="1"></td>
+                <td><input id="cell33" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell34" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell35" class="right" type="text" maxlength ="1"></td>
+                <td><input id="cell36" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell37" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell38" class="right" type="text" maxlength ="1"></td>
                 
                 
                 </tr>
                 
                 <tr>
                 
-                <td><input id="cell36" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell37" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell38" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell39" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell40" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell41" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell42" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell43" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell44" type="number" maxlength ="1" min="1" max="9"></td>
+                <td><input id="cell40" class="left" type="text" maxlength ="1"></td>
+                <td><input id="cell41" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell42" class="right" type="text" maxlength ="1"></td>
+                <td><input id="cell43" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell44" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell45" class="right" type="text" maxlength ="1"></td>
+                <td><input id="cell46" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell47" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell48" class="right" type="text" maxlength ="1"></td>
                 
                 
                 </tr>
                 
                 <tr>
                 
-                <td><input id="cell45" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell46" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell47" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell48" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell49" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell50" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell51" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell52" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell53" type="number" maxlength ="1" min="1" max="9"></td>
+                <td><input id="cell50" class="bottom left " type="text" maxlength ="1"></td>
+                <td><input id="cell51" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell52" class="bottom right" type="text" maxlength ="1"></td>
+                <td><input id="cell53" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell54" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell55" class="bottom right" type="text" maxlength ="1"></td>
+                <td><input id="cell56" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell57" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell58" class="right bottom" type="text" maxlength ="1"></td>
                 
                 
                 </tr>
                 
                 <tr>
                 
-                <td><input id="cell54" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell55" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell56" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell57" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell58" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell59" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell60" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell61" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell62" type="number" maxlength ="1" min="1" max="9"></td>
+                <td><input id="cell60" class="left" type="text" maxlength ="1"></td>
+                <td><input id="cell61" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell62" class="right" type="text" maxlength ="1"></td>
+                <td><input id="cell63" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell64" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell65" class="right" type="text" maxlength ="1"></td>
+                <td><input id="cell66" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell67" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell68" class="right" type="text" maxlength ="1"></td>
                 
                 
                 </tr>
                 
                 <tr>
                 
-                <td><input id="cell63" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell64" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell65" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell66" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell67" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell68" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell69" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell70" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell71" type="number" maxlength ="1" min="1" max="9"></td>
+                <td><input id="cell70" class="left" type="text" maxlength ="1"></td>
+                <td><input id="cell71" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell72" class="right" type="text" maxlength ="1"></td>
+                <td><input id="cell73" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell74" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell75" class="right" type="text" maxlength ="1"></td>
+                <td><input id="cell76" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell77" class="inner" type="text" maxlength ="1"></td>
+                <td><input id="cell78" class="right" type="text" maxlength ="1"></td>
                 
                 
                 </tr>
                 
                 <tr>
                 
-                <td><input id="cell72" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell73" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell74" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell75" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell76" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell77" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell78" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell79" type="number" maxlength ="1" min="1" max="9"></td>
-                <td><input id="cell80" type="number" maxlength ="1" min="1" max="9"></td>
+                <td><input id="cell80" class="bottom left" type="text" maxlength ="1"></td>
+                <td><input id="cell81" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell82" class="bottom right" type="text" maxlength ="1"></td>
+                <td><input id="cell83" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell84" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell85" class="bottom right" type="text" maxlength ="1"></td>
+                <td><input id="cell86" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell87" class="bottom" type="text" maxlength ="1"></td>
+                <td><input id="cell88" class="bottom right" type="text" maxlength ="1"></td>
                 
                 
                 </tr>
@@ -232,11 +192,13 @@
 
 
             </table>
-	<button type="button" onclick="main()">RUN!</button>
 
-        </div>
+    <button type="button" onclick="main()">RUN!</button>
+	<button type="button" onclick="instance1()">SET INSTANCE 1</button>
+    <p id="test"></p>
 
 <script src="main.js"></script>
+<script src="instances.js"></script>
 </body>
 
 </html>
