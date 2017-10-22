@@ -19,5 +19,12 @@ function createStructure() {
 		}
 	}
 	//uncomment to print data structure
-	//document.getElementById("test").innerHTML = JSON.stringify(s, null, 4);
+	document.getElementById("test").innerHTML = JSON.stringify(s, null, 4);
 }
+
+function MRV() {
+    // 1. Get structure
+    // 2. Check columns / rows
+    // 3. Select the square with the smallest domain 
+}
+
