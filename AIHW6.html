@@ -39,13 +39,22 @@
             .bottom { border-bottom: 2px solid #000000; }
             .left { border-left:   2px solid #000000; }
         
+            /*
+            #board {
+                margin: auto;
+            }
+            h1, #description {
+                text-align: center;
+            }
+            */
         
+            
         </style>
 </head>
 <body>
 
 <h1>AI Homework 6 Sudoku</h1>
-<p>Going for the extra cred baby!.</p>
+<p id="description">Going for the extra cred baby!.</p>
 
 
         <div class="containter">
@@ -186,15 +195,13 @@
                 
                 </tr>
     
-    
-
-
-
-
             </table>
 
     <button type="button" onclick="main()">RUN!</button>
 	<button type="button" onclick="instance1()">SET INSTANCE 1</button>
+    <button type="button" onclick="instance2()">SET INSTANCE 2</button>
+    <button type="button" onclick="instance3()">SET INSTANCE 3</button>
+            
     <p id="test"></p>
 
 <script src="main.js"></script>
