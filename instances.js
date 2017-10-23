@@ -93,3 +93,26 @@ function instance3() {
     document.getElementById("cell84").value = 5;
     document.getElementById("cell87").value = 7;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
