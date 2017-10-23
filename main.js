@@ -49,9 +49,9 @@ function recursiveBacktracking(){
 //so it looks like the default elimination of the values is done by MRV, so now we just need a function to 
 //deal with the partial assignments
 //this function takes in the current structure and the planned assignment
-//returns false if the assignment causes a failure state and true otherwise
+//returns the original structure if the value is no good and the new structure otherwise
 
-//parameters, the current structure, the column of the assignment, the row of the assignment, and the value to be assigned
+//parameters, the current structure, and the value to be assigned
 function FC(s , val){
     //alright time to do some forward checking
     //lets make a new structure that we can mess with while not damaging the old one
