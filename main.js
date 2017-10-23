@@ -52,15 +52,19 @@ function recursiveBacktracking(){
 //returns the original structure if the value is no good and the new structure otherwise
 
 //parameters, the current structure, and the value to be assigned
-function FC(s , val){
+function FC(s){
+    
+    //var s = createStructure();
     //alright time to do some forward checking
     //lets make a new structure that we can mess with while not damaging the old one
     var z = s;
-    //do the planned assignment
-    z[row][col].value = val;
     //first we gotta eliminate the same values from the square
+    
     evaluate(z);
     //check if domains are empty
+    
+    var t = JSON.stringify(z, null, 4);
+    document.getElementById("test").innerHTML = t;
     if(!findEmptyDomains(z)){
         //if we do not find an empty array, then we have an appropriate assignment and we return the new array
         return z;
