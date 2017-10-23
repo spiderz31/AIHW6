@@ -4,8 +4,8 @@ function main() {
 
 	var s = createStructure();
     evaluate(s);
-    var MRVList = MRV(s);
-    
+    //var MRVList = MRV(s);
+    BackTracking(s);
 
 }
 
@@ -30,34 +30,135 @@ function MRV(s) {
             
         }
     }
-    document.getElementById("test").innerHTML = mrvlist + " ";
+    //document.getElementById("test").innerHTML = mrvlist + " ";
     return mrvlist;
 
     
 }
 //The backtracking search
-function BackTracking(){
+function BackTracking(d){
     //get the structure and do the initial setup
-    return recursiveBacktracking(); 
+    counter = 0;
+    var v2 = createVariables();
+    recursiveBacktracking(v2, d); 
+    for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
+            document.getElementById("cell"+i+j).innerHTML = v2[i][j];
+        }
+    }
+
 }
 
-function recursiveBacktracking(){
-    
+function recursiveBacktracking(v, d){
+    document.getElementById("test").innerHTML = document.getElementById("test").innerHTML + v + "||||||||||||||||<br>";
+    counter ++;
+    if (counter == 10) {
+        return true;
+    }
+
+
+
+    var result =false;
     //if assignment is complete, return assignment
-    
+    if (checkCompletion(v)) {
+        return true;
+    }
+
     //var<-select unassignedvariable(variables[csp], assignment , csp)
+    var mrvList = MRV(d);
+    var maxDegreeValue = -100;
+    var mrvListIndex;
+    for (i = 0; i < mrvList.length; i++) { 
+        var degree = getDegree(d, mrvList[i][0], mrvList[i][1]);
+        if (degree > maxDegreeValue) {
+            maxDegreeValue = degree;
+            mrvListIndex = i;
+        }
+    }
+    //document.getElementById("test").innerHTML = JSON.stringify(mrvList[mrvListIndex]);
+    var selectedVariableIndex = mrvList[mrvListIndex];
+    var selectedVariableDomain = d[selectedVariableIndex[0]][selectedVariableIndex[1]];
     
+    //var test= " ";
     //for each value in orderdomainvalues(var,assignment,csp)do
+    for (var i = 0; i < selectedVariableDomain.length; i++) { 
         //if value is consistent with assignment given Constraints[csp] then
-        //add{var = value} to assignment
-        //result<-RecursiveBacktracking(assignment,csp)
-        //if reulst != failure then return result
-        //remove {var = value} from assignment
+        var currentValue = selectedVariableDomain[i];
+        //print
+        //document.getElementById("cell"+selectedVariableIndex[0]+selectedVariableIndex[1]).;
+        //test = test + selectedVariableIndex + "| " + currentValue + "| " + isConsistent(selectedVariableIndex, currentValue, d) + "| ";
         
-    //return failure
+        if (isConsistent(selectedVariableIndex, currentValue, d)) {
+            //add{var = value} to assignment
+            v[selectedVariableIndex[0]][selectedVariableIndex[1]] = currentValue;
+            //result<-RecursiveBacktracking(assignment,csp)
+            result = recursiveBacktracking(v.slice(0), d.slice(0));
+            //if reulst != failure then return result
+            if (result != false) {
+                return result;
+            }
+            //remove {var = value} from assignment  
+            v[selectedVariableIndex[0]][selectedVariableIndex[1]] = 0;
+        }      
+    }   
+    //document.getElementById("test").innerHTML = "" + test;
+        
+    return false;
     
 }
 
+function isConsistent(selectedVariableIndex, currentValue) {
+    var i;
+    var j;
+    var row = selectedVariableIndex[0];
+    var col = selectedVariableIndex[1];
+    //check column
+    for (i = 0; i < 9; i++) {
+        if (i == row) {
+            continue;
+        }
+        value = parseInt(document.getElementById("cell"+i+col).value);
+        if (value == currentValue) {
+            return false;
+        }
+    }
+    //check row
+    for (j = 0; j < 9; j++) {
+        if (j == col) {
+            continue;
+        }
+        value = parseInt(document.getElementById("cell"+row+j).value);
+        if (value == currentValue) {
+            return false;
+        }
+    }
+    //check square
+    var i_init = (Math.floor(row/3))*3;
+    var j_init = (Math.floor(col/3))*3;
+    for (i = i_init; i < i_init+3; i++) {
+        for (j = j_init; j < j_init+3; j++) {
+            if (i == row || j == col) {
+                continue;
+            }
+            value = parseInt(document.getElementById("cell"+i+j).value);
+            if (value == currentValue) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+function checkCompletion(v) {
+    for (i = 0; i < 9; i++) {
+        for (j = 0; j < 9; j++) { 
+            if (v[i][j] == 0) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
 
 function getDegree(s, row, col) {
 	//if cell has a value, its degree is 0
@@ -191,6 +292,26 @@ function createStructure() {
 	// document.getElementById("test").innerHTML = JSON.stringify(s);
     return s;
 }
+
+function createVariables() {
+    var v = new Array();
+    for (i = 0; i < 9; i++) {
+        v[i] = new Array();
+        for (j = 0; j < 9; j++) { 
+            value = parseInt(document.getElementById("cell"+i+j).value);
+            if (value) {
+                v[i][j] = value;    // workaround
+            }
+            else {
+                v[i][j] = 0;
+            }
+        }
+    }
+    // uncomment to print data structure
+    // document.getElementById("test").innerHTML = JSON.stringify(s);
+    return v;
+}
+
 
 function evaluate(s) {
     for (i = 0; i < 9; i++) {
@@ -428,6 +549,3 @@ function arrayinarray(arr, item) {
     })
     return contains;
 }
-
-
-
