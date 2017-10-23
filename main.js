@@ -1,21 +1,38 @@
 function main() {
 	//TODO: do the search
 	//document.getElementById("cell00").value = 6;
-	BackTracking();
+
+	var s = createStructure();
+    evaluate(s);
+    var MRVList = MRV(s);
+    
+
 }
 
-function MRV() {
+function MRV(s) {
     
-    // 1. Get structure
-    var s = createStructure();
-    
-    // 2. Check columns / rows
-    evaluate(s);
-    
-    // Gets domain of all blocks
-    var t = JSON.stringify(s, null, 4);
-    document.getElementById("test").innerHTML = t;
-    
+    var mrvlist = [];
+    var lowestSize = 10000;
+   
+    for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
+            value = parseInt(document.getElementById("cell"+i+j)); 
+            if (!value) {    
+                if (s[i][j].length <= lowestSize) {
+                    mrvlist.push([i,j]);
+                    if (s[i][j].length < lowestSize) {
+                        mrvlist = [];
+                        mrvlist.push([i,j]);
+                        lowestSize = s[i][j].length;   
+                    }
+                }
+            }
+            
+        }
+    }
+    document.getElementById("test").innerHTML = mrvlist + " ";
+    return mrvlist;
+
     
 }
 //The backtracking search
@@ -85,6 +102,7 @@ function findEmptyDomains(s){
 	}
     
     return false;
+
 }
 
 function pruneColumn(s, i, col) {
@@ -112,38 +130,6 @@ function pruneRow(s, row, j) {
     return s;
 }
 
-function pruneSquare(s) {
-    // 1. Find location in square (center, top, topright, right, etc.)
-    // 2. Evaluate based on that location 
-    
-    /*
-    Create lists of these coordinates
-    Check if i,j is equal to one of these and evaluate accordingly
-    Top-Left: (0,0) (0,3) (0,6) (3,0) (3,3) (3,6) (6,0) (6,3) (6,6)
-    Top: (0,1) (0,4) (0,7) (3,1) (3,4) (3,7) (6,1) (6,4) (6,7)
-    Top-Right: (0,2) (0,5) (0,8) (3,2) (3,5) (3,8) (6,2) (6,5) (6,8)
-    Left: (1,0) (1,3) (1,6) (4,0) (4,3) (4,6) (7,0) (7,3) (7,6)
-    Middle: (1,1) (1,4) (1,7) (4,1) (4,4) (4,7) (7,1) (7,4) (7,7)
-    Right: (1,2) (1,5) (1,8) (4,2) (4,5) (4,8) (7,2) (7,5) (7,8)
-    Bot-Left: (2,0) (2,3) (2,6) (5,0) (5,3) (5,6) (8,0) (8,3) (8,6)
-    Bot: (2,1) (2,4) (2,7) (5,1) (5,4) (5,7) (8,1) 8,4) (8,7)
-    Bot-Right: (2,2) (2,5) (2,8) (5,2) (5,5) (5,8) (8,2) (8,5) (8,8)
-    */
-    
-    // Arrays:
-    var topLeft = [[0,0],[0,3],[0,6],[3,0],[3,3],[3,6][6,0],[6,3][6,6]];
-    var top = [[0,1],[0,4],[0,7],[3,1],[3,4],[3,7][6,1],[6,4][6,7]];
-    var topRight = [[0,2],[0,5],[0,8],[3,2],[3,5],[3,8][6,2],[6,5][6,8]];
-    var left = [[1,0],[1,3],[1,6],[4,0],[4,3],[4,6][7,0],[7,3][7,6]];
-    var middle = [[1,1],[1,4],[1,7],[4,1],[4,4],[4,7][7,1],[7,4][7,7]];
-    var right = [[1,2],[1,5],[1,8],[4,2],[4,5],[4,8][7,2],[7,5][7,8]];
-    var botLeft = [[2,0],[2,3],[2,6],[5,0],[5,3],[5,6][8,0],[8,3][8,6]];
-    var bot = [[2,1],[2,4],[2,7],[5,1],[5,4],[5,7][8,1],[8,4][8,7]];
-    var botRight = [[2,2],[2,5],[2,8],[5,2],[5,5],[5,8][8,2],[8,5][8,8]];
-    
-    return s;
-}
-
 function createStructure() {
 	var s = new Array();
 	for (i = 0; i < 9; i++) {
@@ -151,7 +137,7 @@ function createStructure() {
 		for (j = 0; j < 9; j++) { 
 			value = parseInt(document.getElementById("cell"+i+j).value);
 			if (value) {
-				s[i][j] = [value];
+				s[i][j] = [1,1,1,1,1,1,1,1,1,1,1,1];    // workaround
 			}
 			else {
 				s[i][j] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -203,7 +189,6 @@ function prunesq(s, i, j) {
     return s;
 }
 
-// if error, do index of in separate line of code
 function eliminateItems(location, s, i, j) {
     var x;
     var index;
