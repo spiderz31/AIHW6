@@ -1,7 +1,7 @@
 function main() {
 	//TODO: do the search
 	//document.getElementById("cell00").value = 6;
-	createStructure();
+	BackTracking();
 }
 
 function MRV() {
@@ -16,6 +16,71 @@ function MRV() {
     var t = JSON.stringify(s, null, 4);
     document.getElementById("test").innerHTML = t;
     
+    
+}
+//The backtracking search
+function BackTracking(){
+    //get the structure and do the initial setup
+    return recursiveBacktracking(); 
+}
+
+function recursiveBacktracking(){
+    
+    //if assignment is complete, return assignment
+    
+    //var<-select unassignedvariable(variables[csp], assignment , csp)
+    
+    //for each value in orderdomainvalues(var,assignment,csp)do
+        //if value is consistent with assignment given Constraints[csp] then
+        //add{var = value} to assignment
+        //result<-RecursiveBacktracking(assignment,csp)
+        //if reulst != failure then return result
+        //remove {var = value} from assignment
+        
+    //return failure
+    
+}
+
+
+
+
+
+
+//so it looks like the default elimination of the values is done by MRV, so now we just need a function to 
+//deal with the partial assignments
+//this function takes in the current structure and the planned assignment
+//returns false if the assignment causes a failure state and true otherwise
+
+//parameters, the current structure, the column of the assignment, the row of the assignment, and the value to be assigned
+function FC(s , val){
+    //alright time to do some forward checking
+    //lets make a new structure that we can mess with while not damaging the old one
+    var z = s;
+    //do the planned assignment
+    z[row][col].value = val;
+    //first we gotta eliminate the same values from the square
+    evaluate(z);
+    //check if domains are empty
+    if(!findEmptyDomains(z)){
+        //if we do not find an empty array, then we have an appropriate assignment and we return the new array
+        return z;
+    }
+    //if we find an empty domain, just return the original array
+    return s;
+}
+
+//function to find any empty domains in our 
+function findEmptyDomains(s){
+    
+    for (i = 0; i < 9; i++) {
+		for (j = 0; j < 9; j++) { 
+			if(s[i][j].length == 0){
+                return true;
+            }
+		}
+	}
+    
+    return false;
 }
 
 function pruneColumn(s, i, col) {
@@ -40,6 +105,38 @@ function pruneRow(s, row, j) {
                 s[row][j].splice(index, 1);
         }
     }
+    return s;
+}
+
+function pruneSquare(s) {
+    // 1. Find location in square (center, top, topright, right, etc.)
+    // 2. Evaluate based on that location 
+    
+    /*
+    Create lists of these coordinates
+    Check if i,j is equal to one of these and evaluate accordingly
+    Top-Left: (0,0) (0,3) (0,6) (3,0) (3,3) (3,6) (6,0) (6,3) (6,6)
+    Top: (0,1) (0,4) (0,7) (3,1) (3,4) (3,7) (6,1) (6,4) (6,7)
+    Top-Right: (0,2) (0,5) (0,8) (3,2) (3,5) (3,8) (6,2) (6,5) (6,8)
+    Left: (1,0) (1,3) (1,6) (4,0) (4,3) (4,6) (7,0) (7,3) (7,6)
+    Middle: (1,1) (1,4) (1,7) (4,1) (4,4) (4,7) (7,1) (7,4) (7,7)
+    Right: (1,2) (1,5) (1,8) (4,2) (4,5) (4,8) (7,2) (7,5) (7,8)
+    Bot-Left: (2,0) (2,3) (2,6) (5,0) (5,3) (5,6) (8,0) (8,3) (8,6)
+    Bot: (2,1) (2,4) (2,7) (5,1) (5,4) (5,7) (8,1) 8,4) (8,7)
+    Bot-Right: (2,2) (2,5) (2,8) (5,2) (5,5) (5,8) (8,2) (8,5) (8,8)
+    */
+    
+    // Arrays:
+    var topLeft = [[0,0],[0,3],[0,6],[3,0],[3,3],[3,6][6,0],[6,3][6,6]];
+    var top = [[0,1],[0,4],[0,7],[3,1],[3,4],[3,7][6,1],[6,4][6,7]];
+    var topRight = [[0,2],[0,5],[0,8],[3,2],[3,5],[3,8][6,2],[6,5][6,8]];
+    var left = [[1,0],[1,3],[1,6],[4,0],[4,3],[4,6][7,0],[7,3][7,6]];
+    var middle = [[1,1],[1,4],[1,7],[4,1],[4,4],[4,7][7,1],[7,4][7,7]];
+    var right = [[1,2],[1,5],[1,8],[4,2],[4,5],[4,8][7,2],[7,5][7,8]];
+    var botLeft = [[2,0],[2,3],[2,6],[5,0],[5,3],[5,6][8,0],[8,3][8,6]];
+    var bot = [[2,1],[2,4],[2,7],[5,1],[5,4],[5,7][8,1],[8,4][8,7]];
+    var botRight = [[2,2],[2,5],[2,8],[5,2],[5,5],[5,8][8,2],[8,5][8,8]];
+    
     return s;
 }
 
