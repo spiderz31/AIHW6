@@ -1,17 +1,19 @@
 function main() {
 	//TODO: do the search
 	//document.getElementById("cell00").value = 6;
+
 	var s = createStructure();
     evaluate(s);
     var MRVList = MRV(s);
     
+
 }
 
 function MRV(s) {
     
     var mrvlist = [];
     var lowestSize = 10000;
-    
+   
     for (var i = 0; i < 9; i++) {
         for (var j = 0; j < 9; j++) {
             value = parseInt(document.getElementById("cell"+i+j)); 
@@ -30,6 +32,77 @@ function MRV(s) {
     }
     document.getElementById("test").innerHTML = mrvlist + " ";
     return mrvlist;
+
+    
+}
+//The backtracking search
+function BackTracking(){
+    //get the structure and do the initial setup
+    return recursiveBacktracking(); 
+}
+
+function recursiveBacktracking(){
+    
+    //if assignment is complete, return assignment
+    
+    //var<-select unassignedvariable(variables[csp], assignment , csp)
+    
+    //for each value in orderdomainvalues(var,assignment,csp)do
+        //if value is consistent with assignment given Constraints[csp] then
+        //add{var = value} to assignment
+        //result<-RecursiveBacktracking(assignment,csp)
+        //if reulst != failure then return result
+        //remove {var = value} from assignment
+        
+    //return failure
+    
+}
+
+
+
+
+
+
+//so it looks like the default elimination of the values is done by MRV, so now we just need a function to 
+//deal with the partial assignments
+//this function takes in the current structure and the planned assignment
+//returns the original structure if the value is no good and the new structure otherwise
+
+//parameters, the current structure, and the value to be assigned
+function FC(s){
+    
+    //var s = createStructure();
+    //alright time to do some forward checking
+    //lets make a new structure that we can mess with while not damaging the old one
+    var z = s;
+    //first we gotta eliminate the same values from the square
+    
+    evaluate(z);
+    //check if domains are empty
+    
+    var t = JSON.stringify(z, null, 4);
+    document.getElementById("test").innerHTML = t;
+    if(!findEmptyDomains(z)){
+        //if we do not find an empty array, then we have an appropriate assignment and we return the new array
+        return z;
+    }
+    //if we find an empty domain, just return the original array
+    return s;
+}
+
+//function to find any empty domains in our 
+function findEmptyDomains(s){
+    
+    for (i = 0; i < 9; i++) {
+		for (j = 0; j < 9; j++) { 
+			if(s[i][j].length == 0){
+                return true;
+            }
+		}
+	}
+    
+    return false;
+
 }
 
 function pruneColumn(s, i, col) {
