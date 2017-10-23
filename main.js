@@ -59,7 +59,50 @@ function recursiveBacktracking(){
 }
 
 
-
+function getDegree(s, row, col) {
+	//if cell has a value, its degree is 0
+	if (s[row][col].length == 1) {
+		return 0;
+	}
+	var i;
+	var j;
+	var degree = 0;
+	//check column
+	for (i = 0; i < 9; i++) {
+		if (i == row) {
+			continue;
+		}
+		value = parseInt(document.getElementById("cell"+i+col).value);
+		if (!value) {
+			degree++;
+		}
+	}
+	//check row
+	for (j = 0; j < 9; j++) {
+		if (j == col) {
+			continue;
+		}
+		value = parseInt(document.getElementById("cell"+row+j).value);
+		if (!value) {
+			degree++;
+		}
+	}
+	//check square
+	var i_init = (Math.floor(row/3))*3;
+	var j_init = (Math.floor(col/3))*3;
+	for (i = i_init; i < i_init+3; i++) {
+		for (j = j_init; j < j_init+3; j++) {
+			if (i == row || j == col) {
+				continue;
+			}
+			value = parseInt(document.getElementById("cell"+i+j).value);
+			if (!value) {
+				degree++;
+			}
+		}
+	}
+	return degree;
+}
 
 
 
