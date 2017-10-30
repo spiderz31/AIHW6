@@ -39,15 +39,17 @@
             .bottom { border-bottom: 2px solid #000000; }
             .left { border-left:   2px solid #000000; }
         
-            /*
+            
             #board {
                 margin: auto;
             }
-            h1, #description {
+            h1, #description, #log, .buttons {
                 text-align: center;
             }
-            */
-        
+            #runbutton {
+                background-color: #00FF00;
+                border: 1 1 1 1;
+            }
             
         </style>
 </head>
@@ -197,13 +199,16 @@
     
             </table>
 
-    <button type="button" onclick="main()">RUN!</button>
-	<button type="button" onclick="instance1()">SET INSTANCE 1</button>
-    <button type="button" onclick="instance2()">SET INSTANCE 2</button>
-    <button type="button" onclick="instance3()">SET INSTANCE 3</button>
-    <button type="button" onclick="main()">MRV TEST</button>
-            
-    <p id="test"></p>
+    <br>
+    <div class="buttons">
+        <button id="runbutton" type="button" onclick="main()">RUN!</button>
+    	<button type="button" onclick="instance1()">SET INSTANCE 1</button>
+        <button type="button" onclick="instance2()">SET INSTANCE 2</button>
+        <button type="button" onclick="instance3()">SET INSTANCE 3</button>
+    </div>
+    <br>
+
+    <p id="log"></p>
 
 <script src="main.js"></script>
 <script src="instances.js"></script>
