@@ -1,22 +1,16 @@
 function main() {
-    //TODO: do the search
-    //document.getElementById("cell00").value = 6;
-
-    var s = createStructure();
-    //evaluate(s);
     
-    //var MRVList = MRV(s);
-    //log(MRVList);
+    var s = createStructure();
+  
     BackTracking(s);
-    //var v2 = createVariables();
-    //FC(d, v, i2, j2);
+
 }
 
 function log(string) {
     document.getElementById("test").innerHTML = document.getElementById("test").innerHTML + string + "<br>";
 }
 
-
+//funciton that calculates the minimum remianing values for all the cells in the CSP, and returns a list of the smallest ones
 function MRV(s) {
     
     var mrvlist = [];
@@ -54,13 +48,7 @@ function BackTracking(d){
         }
     }
 
-/* 
-    for (var i = 0; i < 9; i++) {
-        for (var j = 0; j < 9; j++) {
-            log("domain for " + i + ", " + j + ": " + d[i][j]);
-        }
-    }
- */
+
     recursiveBacktracking(v2, d, counter, 0, 0); 
     for (var i = 0; i < 9; i++) {
         for (var j = 0; j < 9; j++) {
@@ -69,13 +57,15 @@ function BackTracking(d){
     }
 
 }
-
+//the main backtracking function
+//finds the solution to the sudoku puzzle via backtracking search
+//takes in an assignment variable, the CSP , a counter variable, and the location of the next considered assignment.
 function recursiveBacktracking(v, d, counter, i2, j2){
     counter ++;
     log("<br><br> layer:" + counter + "<br>" + v);
 
     log("<br> domain: " + JSON.stringify(d) + "<br>");
-    //if (counter == 10) {  return true; }
+
 
     //forward checking
     FC(d, v, i2, j2);
@@ -210,6 +200,7 @@ function isConsistent(selectedVariableIndex, currentValue) {
     return true;
 }
 
+//checks to see if the puzzle is complete
 function checkCompletion(v) {
     for (i = 0; i < 9; i++) {
         for (j = 0; j < 9; j++) { 
@@ -220,7 +211,9 @@ function checkCompletion(v) {
     }
     return true;
 }
-
+//function to get the degree of any individual cell
+//returns the number of other cells in the same row, column, and 3x3 square that have no assigned value
+//take in the CSP, and coordinates of the cell
 function getDegree(s, row, col) {
     //if cell has a value, its degree is 0
     if (s[row][col].length == 1) {
@@ -271,9 +264,9 @@ function getDegree(s, row, col) {
 //so it looks like the default elimination of the values is done by MRV, so now we just need a function to 
 //deal with the partial assignments
 //this function takes in the current structure and the planned assignment
-//returns the original structure if the value is no good and the new structure otherwise
+//returns true if the assignment is valid, and false otherwise
 
-//parameters, the current structure, and the value to be assigned
+//parameters, the current structure, and the value to be assigned , and the row and column to put it in
 function FC(d, v, row, col){
     var value2 = v[row][col];
     if (value2 == '') {
@@ -349,7 +342,8 @@ function findEmptyDomains(s){
     return false;
 
 }
-
+//runs through a column, calling splice on each cell with no assignment
+//takes in the CSP, the row, and the column
 function pruneColumn(s, i, col) {
     for (var row = 0; row < 9; row++) {
         /* Maybe a document.getelementbyid selection would be better? */
@@ -362,7 +356,8 @@ function pruneColumn(s, i, col) {
     }
     return s;
 }
-
+//runs through a row, calling splice on each cell with no assignment
+//takes in the CSP, the row and the column
 function pruneRow(s, row, j) {
     for (var col = 0; col < 9; col++) {
         if (s[row][col].length == 1) {
@@ -374,7 +369,7 @@ function pruneRow(s, row, j) {
     }
     return s;
 }
-
+//creates our CSP structure for use in solving the puzzle
 function createStructure() {
     var s = new Array();
     for (i = 0; i < 9; i++) {
@@ -393,7 +388,7 @@ function createStructure() {
     // document.getElementById("test").innerHTML = JSON.stringify(s);
     return s;
 }
-
+//creates all the vriables in the CSP and sets up their domains.
 function createVariables() {
     var v = new Array();
     for (i = 0; i < 9; i++) {
@@ -413,7 +408,8 @@ function createVariables() {
     return v;
 }
 
-
+//evaluates all the variables in the CSP and cuts out any domain values that dont work
+//takes in the CSP
 function evaluate(s) {
     for (i = 0; i < 9; i++) {
         for (j = 0; j < 9; j++) {
@@ -428,7 +424,8 @@ function evaluate(s) {
     }
     return s;
 }
-
+//function to prune all like elements out of each 3x3 sqaure after an assignment
+//takes in the CSP, and the row and column of the assignment
 function prunesq(s, i, j) {
     var topLeft = [[0,0],[0,3],[0,6],[3,0],[3,3],[3,6],[6,0],[6,3],[6,6]];
     var top = [[0,1],[0,4],[0,7],[3,1],[3,4],[3,7],[6,1],[6,4],[6,7]];
@@ -453,7 +450,8 @@ function prunesq(s, i, j) {
     else if (arrayinarray(botRight, item)) s = eliminateItems("botright", s, i, j);
     return s;
 }
-
+//companion funciton to prunesq, goes through a specified sqaure and removes the values matching the assignments from their domain
+//takes in the sqaure location, the CSP, the row, and the column
 function eliminateItems(location, s, i, j) {
     var x;
     var index;
@@ -623,7 +621,8 @@ function eliminateItems(location, s, i, j) {
     }
     return s;
 }
-
+//cuts a value out of a cell's domain
+//takes in the value to cut, the CSP, and the row and column
 function spliceS(x, s, i, j) {
     var index;
     if (x != -1) {
@@ -642,7 +641,7 @@ function valueLookUp(i, j) {
     }
     else return -1;
 }
-
+//checks to see if an array has another array in it
 function arrayinarray(arr, item) {
     var itemasstring = JSON.stringify(item);
     var contains = arr.some(function(ele) {
