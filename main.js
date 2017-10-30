@@ -1,71 +1,59 @@
-function main() {
-    
-    var s = createStructure();
-  
-    BackTracking(s);
+var step = 1;
 
+function main() {
+    initLog();
+    var initTime = performance.now();
+    backTracking();
+    var endTime = performance.now();
+    var time = endTime - initTime;
+    time = time.toFixed(3);
+    log("Took <b>" + time + "</b> ms to solve!");
+}
+
+//Log functions
+function initLog() {
+    step = 1;
+    document.getElementById("log").innerHTML = '';
 }
 
 function log(string) {
-    document.getElementById("test").innerHTML = document.getElementById("test").innerHTML + string + "<br>";
+    document.getElementById("log").innerHTML = document.getElementById("log").innerHTML + string + "<br>";
 }
 
-//funciton that calculates the minimum remianing values for all the cells in the CSP, and returns a list of the smallest ones
-function MRV(s) {
-    
-    var mrvlist = [];
-    var lowestSize = 10000;
-   
-    for (var i = 0; i < 9; i++) {
-        for (var j = 0; j < 9; j++) {
-            value = parseInt(document.getElementById("cell"+i+j)); 
-            if (!value) {    
-                if (s[i][j].length <= lowestSize) {
-                    mrvlist.push([i,j]);
-                    if (s[i][j].length < lowestSize) {
-                        mrvlist = [];
-                        mrvlist.push([i,j]);
-                        lowestSize = s[i][j].length;   
-                    }
-                }
-            }
-            
-        }
-    }
-    //document.getElementById("test").innerHTML = mrvlist + " ";
-    return mrvlist;
 
-    
-}
 //The backtracking search
-function BackTracking(d){
-    //get the structure and do the initial setup
+function backTracking(){
+    //counter: will increment by one on each call to recursive function. Used for log purposes
     counter = 0;
-    var v2 = createVariables();
+    
+    //get the structure and do the initial setup
+    var d = createDomains();
+    var v = createVariables();
+
+    //before start, apply forward checking to all set variables
     for (var i = 0; i < 9; i++) {
         for (var j = 0; j < 9; j++) {
-            FC(d, v2,  i, j);
+            FC(d, v,  i, j);
         }
     }
 
-
-    recursiveBacktracking(v2, d, counter, 0, 0); 
+    //start recursive backtracking search
+    recursiveBacktracking(v, d, counter, 0, 0); 
+    
+    //print all values into the board
     for (var i = 0; i < 9; i++) {
         for (var j = 0; j < 9; j++) {
-            document.getElementById("cell"+i+j).innerHTML = v2[i][j];
+            document.getElementById("cell"+i+j).innerHTML = v[i][j];
         }
     }
 
 }
+
 //the main backtracking function
 //finds the solution to the sudoku puzzle via backtracking search
 //takes in an assignment variable, the CSP , a counter variable, and the location of the next considered assignment.
 function recursiveBacktracking(v, d, counter, i2, j2){
     counter ++;
-    log("<br><br> layer:" + counter + "<br>" + v);
-
-    log("<br> domain: " + JSON.stringify(d) + "<br>");
-
 
     //forward checking
     FC(d, v, i2, j2);
@@ -94,15 +82,18 @@ function recursiveBacktracking(v, d, counter, i2, j2){
 
     var selectedVariableIndex = mrvList[mrvListIndex];
     var selectedVariableDomain = d[selectedVariableIndex[0]][selectedVariableIndex[1]];
-    log("layer:" + counter + " " + "values to test for index " + selectedVariableIndex + ": " + selectedVariableDomain);
+    
+    if (step <= 3) {
+        log("Step " + step + ": <br>a) Variable selected: " + selectedVariableIndex);
+        log("b) Domain: {" + selectedVariableDomain + "} | Domain size: " + selectedVariableDomain.length);
+        log("c) Degree of variable selected: " + maxDegreeValue + "<br>");
+        step++;
+    }
+
     //for each value in orderdomainvalues(var,assignment,csp)do
-    var i = 0;
-    //for (var i = 0; i < selectedVariableDomain.length; i++) { 
-    while (i < selectedVariableDomain.length) { 
+    for (var i = 0; i < selectedVariableDomain.length; i++) {
         //if value is consistent with assignment given Constraints[csp] then
         var currentValue = selectedVariableDomain[i];
-        
-        log(selectedVariableIndex + "| " + currentValue + "| " + isConsistent(selectedVariableIndex, currentValue, d) + "| ");
 
         if (isConsistent(selectedVariableIndex, currentValue, d)) {
 
@@ -111,10 +102,9 @@ function recursiveBacktracking(v, d, counter, i2, j2){
 
 
             //add{var = value} to assignment
-            log("layer:" + counter + " " + "add " + selectedVariableIndex + ": " + currentValue);
             vClone[selectedVariableIndex[0]][selectedVariableIndex[1]] = currentValue;
-            setHtmlValue(selectedVariableIndex[0], selectedVariableIndex[1], currentValue);
-            dClone[selectedVariableIndex[0]][selectedVariableIndex[1]] = [1,1,1,1,1,1,1,1,1,1,1,1];    // workaround
+            setCellValue(selectedVariableIndex[0], selectedVariableIndex[1], currentValue);
+            dClone[selectedVariableIndex[0]][selectedVariableIndex[1]] = [1,1,1,1,1,1,1,1,1,1,1,1];      //assign a big domain so it will never be selected
             
             //result<-RecursiveBacktracking(assignment,csp)
             result = recursiveBacktracking(vClone, dClone, counter, selectedVariableIndex[0], selectedVariableIndex[1]);
@@ -125,16 +115,48 @@ function recursiveBacktracking(v, d, counter, i2, j2){
                 return result;
             }
             //remove {var = value} from assignment
-            removeHtmlValue(selectedVariableIndex[0], selectedVariableIndex[1]);
-            log("layer:" + counter + " " + "remove " + selectedVariableIndex + ": " + currentValue);
-        }     
-        i++; 
+            removeCellValue(selectedVariableIndex[0], selectedVariableIndex[1]);
+        } 
     }   
         
     return false;
     
 }
 
+function setCellValue(row, column, val) {
+    document.getElementById("cell"+row+column).value = val;
+}
+
+function removeCellValue(row, column) {
+    document.getElementById("cell"+row+column).value = '';
+}
+
+//function that calculates the minimum remianing values for all the cells in the CSP, and returns a list of the smallest ones
+function MRV(d) {
+    
+    var mrvlist = [];
+    var lowestSize = 10000;
+   
+    for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
+            value = parseInt(document.getElementById("cell"+i+j)); 
+            if (!value) {    
+                if (d[i][j].length <= lowestSize) {
+                    mrvlist.push([i,j]);
+                    if (d[i][j].length < lowestSize) {
+                        mrvlist = [];
+                        mrvlist.push([i,j]);
+                        lowestSize = d[i][j].length;   
+                    }
+                }
+            }
+            
+        }
+    }
+    return mrvlist;
+}
+
+//Clones a 3d array. This will be used to pass a clone of the domains and values to the recursive function
 function clone(o) {
     var cl = new Array();
     for (var i = 0; i < 9; i++) {
@@ -149,15 +171,7 @@ function clone(o) {
     return cl;
 }
 
-function setHtmlValue(row, column, val) {
-    document.getElementById("cell"+row+column).value = val;
-}
-
-function removeHtmlValue(row, column) {
-    document.getElementById("cell"+row+column).value = '';
-}
-
-
+//Check consistency of the board. returns a boolean indicating consistency
 function isConsistent(selectedVariableIndex, currentValue) {
     var i;
     var j;
@@ -211,14 +225,11 @@ function checkCompletion(v) {
     }
     return true;
 }
+
 //function to get the degree of any individual cell
 //returns the number of other cells in the same row, column, and 3x3 square that have no assigned value
 //take in the CSP, and coordinates of the cell
 function getDegree(s, row, col) {
-    //if cell has a value, its degree is 0
-    if (s[row][col].length == 1) {
-        return 0;
-    }
     var i;
     var j;
     var degree = 0;
@@ -259,14 +270,9 @@ function getDegree(s, row, col) {
     return degree;
 }
 
-
-
-//so it looks like the default elimination of the values is done by MRV, so now we just need a function to 
-//deal with the partial assignments
-//this function takes in the current structure and the planned assignment
-//returns true if the assignment is valid, and false otherwise
-
 //parameters, the current structure, and the value to be assigned , and the row and column to put it in
+//row and col are the indexes of the new added value
+//Forward Checking will prune the domain of all related cells (in the the same row, column, and 3x3 square)
 function FC(d, v, row, col){
     var value2 = v[row][col];
     if (value2 == '') {
@@ -327,67 +333,37 @@ function FC(d, v, row, col){
     }
 }
 
-//function to find any empty domains in our 
+//function to find any empty domains in our board 
 function findEmptyDomains(s){
-    
     for (i = 0; i < 9; i++) {
         for (j = 0; j < 9; j++) { 
             if(s[i][j].length == 0){
-                log("empty domain for: " + i + ", " + j);
+                //log("empty domain for: " + i + ", " + j);
                 return true;
             }
         }
     }
-    
     return false;
+}
 
-}
-//runs through a column, calling splice on each cell with no assignment
-//takes in the CSP, the row, and the column
-function pruneColumn(s, i, col) {
-    for (var row = 0; row < 9; row++) {
-        /* Maybe a document.getelementbyid selection would be better? */
-        if (s[row][col].length == 1) {
-            var number = s[row][col][0];
-            var index = s[i][col].indexOf(number);
-            if (index > -1)
-                s[i][col].splice(index, 1);
-        }
-    }
-    return s;
-}
-//runs through a row, calling splice on each cell with no assignment
-//takes in the CSP, the row and the column
-function pruneRow(s, row, j) {
-    for (var col = 0; col < 9; col++) {
-        if (s[row][col].length == 1) {
-            var number = s[row][col][0];
-            var index = s[row][j].indexOf(number);
-            if (index > -1)
-                s[row][j].splice(index, 1);
-        }
-    }
-    return s;
-}
 //creates our CSP structure for use in solving the puzzle
-function createStructure() {
+function createDomains() {
     var s = new Array();
     for (i = 0; i < 9; i++) {
         s[i] = new Array();
         for (j = 0; j < 9; j++) { 
             value = parseInt(document.getElementById("cell"+i+j).value);
             if (value) {
-                s[i][j] = [1,1,1,1,1,1,1,1,1,1,1,1];    // workaround
+                s[i][j] = [1,1,1,1,1,1,1,1,1,1,1,1];       //assign a big domain so it will never be selected
             }
             else {
                 s[i][j] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             }
         }
     }
-    // uncomment to print data structure
-    // document.getElementById("test").innerHTML = JSON.stringify(s);
     return s;
 }
+
 //creates all the vriables in the CSP and sets up their domains.
 function createVariables() {
     var v = new Array();
@@ -396,256 +372,12 @@ function createVariables() {
         for (j = 0; j < 9; j++) { 
             value = parseInt(document.getElementById("cell"+i+j).value);
             if (value) {
-                v[i][j] = value;    // workaround
+                v[i][j] = value;
             }
             else {
                 v[i][j] = 0;
             }
         }
     }
-    // uncomment to print data structure
-    // document.getElementById("test").innerHTML = JSON.stringify(s);
     return v;
-}
-
-//evaluates all the variables in the CSP and cuts out any domain values that dont work
-//takes in the CSP
-function evaluate(s) {
-    for (i = 0; i < 9; i++) {
-        for (j = 0; j < 9; j++) {
-            value = parseInt(document.getElementById("cell"+i+j).value);
-            if (!value) {
-                // If value is not present, prune the domain
-                s = pruneRow(s, i, j);
-                s = pruneColumn(s, i, j);
-                s = prunesq(s, i, j);
-            } 
-        }
-    }
-    return s;
-}
-//function to prune all like elements out of each 3x3 sqaure after an assignment
-//takes in the CSP, and the row and column of the assignment
-function prunesq(s, i, j) {
-    var topLeft = [[0,0],[0,3],[0,6],[3,0],[3,3],[3,6],[6,0],[6,3],[6,6]];
-    var top = [[0,1],[0,4],[0,7],[3,1],[3,4],[3,7],[6,1],[6,4],[6,7]];
-    var topRight = [[0,2],[0,5],[0,8],[3,2],[3,5],[3,8][6,2],[6,5],[6,8]];
-    var left = [[1,0],[1,3],[1,6],[4,0],[4,3],[4,6],[7,0],[7,3],[7,6]];
-    var middle = [[1,1],[1,4],[1,7],[4,1],[4,4],[4,7],[7,1],[7,4],[7,7]];
-    var right = [[1,2],[1,5],[1,8],[4,2],[4,5],[4,8],[7,2],[7,5],[7,8]];
-    var botLeft = [[2,0],[2,3],[2,6],[5,0],[5,3],[5,6],[8,0],[8,3],[8,6]];
-    var bot = [[2,1],[2,4],[2,7],[5,1],[5,4],[5,7],[8,1],[8,4],[8,7]];
-    var botRight = [[2,2],[2,5],[2,8],[5,2],[5,5],[5,8],[8,2],[8,5],[8,8]];
-    
-    var item = [i, j];
-    
-    if (arrayinarray(topLeft, item)) s = eliminateItems("topleft", s, i, j);
-    else if (arrayinarray(top, item)) s = eliminateItems("top", s, i, j);
-    else if (arrayinarray(topRight, item)) s = eliminateItems("topright", s, i, j);
-    else if (arrayinarray(left, item)) s = eliminateItems("left", s, i, j);
-    else if (arrayinarray(middle, item)) s = eliminateItems("middle", s, i, j);
-    else if (arrayinarray(right, item)) s = eliminateItems("right", s, i, j);
-    else if (arrayinarray(botLeft, item)) s = eliminateItems("botleft", s, i, j);
-    else if (arrayinarray(bot, item)) s = eliminateItems("bottom", s, i, j);
-    else if (arrayinarray(botRight, item)) s = eliminateItems("botright", s, i, j);
-    return s;
-}
-//companion funciton to prunesq, goes through a specified sqaure and removes the values matching the assignments from their domain
-//takes in the sqaure location, the CSP, the row, and the column
-function eliminateItems(location, s, i, j) {
-    var x;
-    var index;
-    switch(location) {
-        case "topleft":
-            x = valueLookUp(i, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j+2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j+2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+2, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+2, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+2, j+2);
-            s = spliceS(x, s, i, j);
-            break;
-        case "top":
-            x = valueLookUp(i, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+2, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+2, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+2, j+1);
-            s = spliceS(x, s, i, j);
-            break;
-        case "topright":
-            x = valueLookUp(i, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j-2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j-2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+2, j-2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+2, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+2, j);
-            s = spliceS(x, s, i, j);
-            break;
-        case "left":
-            x = valueLookUp(i-1, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-1, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-1, j+2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j+2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j+2);
-            s = spliceS(x, s, i, j);
-            break;
-        case "middle":
-            x = valueLookUp(i-1, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-1, j);
-            s = spliceS(x, s, i, j); 
-            x = valueLookUp(i-1, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j-1);
-            s = spliceS(x, s, i, j); 
-            x = valueLookUp(i, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j);
-            s = spliceS(x, s, i, j); 
-            x = valueLookUp(i+1, j+1);
-            s = spliceS(x, s, i, j); 
-            break;
-        case "right":
-            x = valueLookUp(i-1, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-1, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-1, j-2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j-2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i+1, j-2);
-            s = spliceS(x, s, i, j);
-            break;
-        case "botleft":
-            x = valueLookUp(i-1, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-1, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-2, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-2, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-2, j+2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-1, j+2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j+2);
-            s = spliceS(x, s, i, j);
-            break;
-        case "bottom":
-            x = valueLookUp(i-1, j-1);
-            is = spliceS(x, s, i, j);
-            x = valueLookUp(i-1, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-1, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j+1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-2, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-2, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-2, j+1);
-            s = spliceS(x, s, i, j);
-            break;
-        case "botright":
-            x = valueLookUp(i-1, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-1, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-2, j-2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-2, j-1);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-2, j);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i-1, j-2);
-            s = spliceS(x, s, i, j);
-            x = valueLookUp(i, j-2);
-            s = spliceS(x, s, i, j);
-            break;   
-    }
-    return s;
-}
-//cuts a value out of a cell's domain
-//takes in the value to cut, the CSP, and the row and column
-function spliceS(x, s, i, j) {
-    var index;
-    if (x != -1) {
-        index = s[i][j].indexOf(x);
-        if (index != -1) s[i][j].splice(index, 1);     
-    }
-    return s;
-}
-
-// Function to check if an element exists: return value if it exists, -1 if not
-function valueLookUp(i, j) {
-    value = parseInt(document.getElementById("cell"+i+j).value);
-    if (value) {
-        //console.log("Value " + value + " at cell " +i + " " + j);
-        return value;
-    }
-    else return -1;
-}
-//checks to see if an array has another array in it
-function arrayinarray(arr, item) {
-    var itemasstring = JSON.stringify(item);
-    var contains = arr.some(function(ele) {
-        return JSON.stringify(ele) === itemasstring;
-    })
-    return contains;
 }
